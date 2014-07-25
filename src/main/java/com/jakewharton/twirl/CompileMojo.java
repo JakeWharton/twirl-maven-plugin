@@ -81,6 +81,11 @@ public final class CompileMojo extends AbstractMojo {
   @Parameter
   private Set<String> imports = Sets.newLinkedHashSet();
 
+  /** Whether to add the output directory as a compilation source root. */
+  @Parameter
+  @SuppressWarnings("FieldCanBeLocal") // Mojo parameter.
+  private boolean addSourceRoot = true;
+
   @Parameter(defaultValue = "${project}", readonly = true, required = true)
   private MavenProject project;
 
@@ -126,7 +131,9 @@ public final class CompileMojo extends AbstractMojo {
     long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos);
     log.info(String.format("Completed in %sms", tookMs));
 
-    project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
+    if (addSourceRoot) {
+      project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
+    }
   }
 
   private String getImports(String extension) {

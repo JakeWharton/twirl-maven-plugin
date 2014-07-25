@@ -38,6 +38,18 @@ public final class IntegrationTest {
     assertThat(project.getCompileSourceRoots()).contains(expected);
   }
 
+  @Test public void doNotAddSourceRootWhenConfiguredAsSuch() throws Exception {
+    File basedir = resources.getBasedir("hello-world-not-adding-source-root");
+
+    MavenProject project = rule.readMavenProject(basedir);
+    MavenSession session = rule.newMavenSession(project);
+    MojoExecution execution = rule.newMojoExecution("compile");
+    rule.executeMojo(session, project, execution);
+
+    String expected = new File(basedir, "target/generated-sources/twirl").getAbsolutePath();
+    assertThat(project.getCompileSourceRoots()).doesNotContain(expected);
+  }
+
   @Test public void helloWorldFormats() throws Exception {
     File basedir = resources.getBasedir("hello-world-formats");
 
