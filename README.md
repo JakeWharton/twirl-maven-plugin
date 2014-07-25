@@ -13,7 +13,7 @@ which you then render in code:
 ```java
 html.Hello.render("Jake")
 ```
-to yeild the final result:
+to yield the final result:
 ```
 <h1>Hello, Jake!</h1>
 ```
