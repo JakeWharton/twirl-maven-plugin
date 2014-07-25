@@ -90,7 +90,10 @@ public class CompileMojo extends AbstractMojo {
     Log log = getLog();
 
     if (includes.isEmpty()) {
-      includes.add("**/*.scala.html");
+      // Add default globs for all supported extensions.
+      for (String extension : FORMATTERS.keySet()) {
+        includes.add("**/*.scala." + extension);
+      }
     }
 
     String[] templatePaths = findFiles(templateDirectory, includes, excludes);
