@@ -37,8 +37,8 @@ and specify a dependency on the Twirl API:
 ```
 
 By default the plugin looks for templates in `src/main/twirl/` and compiles to
-`target/twirl/`. The output folder is automatically added as a source root
-on the project.
+`target/generated-sources/twirl/`. The output folder is automatically added as a
+source root on the project.
 
 The generated code is a Scala source file for each template which still need
 to be compiled using something like the [scala-maven-plugin][2].

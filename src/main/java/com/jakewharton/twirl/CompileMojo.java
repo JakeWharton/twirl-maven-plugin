@@ -39,7 +39,7 @@ public class CompileMojo extends AbstractMojo {
   private File templateDirectory;
 
   /** Directory to which compiled template scala files are placed. */
-  @Parameter(defaultValue = "${project.build.directory}/twirl")
+  @Parameter(defaultValue = "${project.build.directory}/generated-sources/twirl")
   private File outputDirectory;
 
   /**

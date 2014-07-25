@@ -19,7 +19,7 @@ public class HelloWorldProjectTest {
     Mojo mojo = rule.lookupConfiguredMojo(basedir, "compile");
     mojo.execute();
 
-    File expected = new File(basedir, "target/twirl/foo/bar/html/baz.template.scala");
+    File expected = new File(basedir, "target/generated-sources/twirl/foo/bar/html/baz.template.scala");
     assertThat(expected).exists();
   }
 }
