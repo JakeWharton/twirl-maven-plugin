@@ -15,6 +15,7 @@
         <artifactId>twirl-maven-plugin</artifactId>
         <configuration>
           <imports>
+            <import>my.Thing</import>
             <import>my.other.Thing</import>
           </imports>
         </configuration>
