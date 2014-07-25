@@ -2,8 +2,11 @@ package com.jakewharton.twirl;
 
 import com.google.common.io.Files;
 import java.io.File;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.plugin.testing.resources.TestResources;
+import org.apache.maven.project.MavenProject;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -21,6 +24,18 @@ public final class IntegrationTest {
 
     File fooBarBazTemplate = new File(basedir, "target/generated-sources/twirl/foo/bar/html/baz.template.scala");
     assertThat(fooBarBazTemplate).exists();
+  }
+
+  @Test public void outputDirectoryAddedAsSourceRoot() throws Exception {
+    File basedir = resources.getBasedir("hello-world");
+
+    MavenProject project = rule.readMavenProject(basedir);
+    MavenSession session = rule.newMavenSession(project);
+    MojoExecution execution = rule.newMojoExecution("compile");
+    rule.executeMojo(session, project, execution);
+
+    String expected = new File(basedir, "target/generated-sources/twirl").getAbsolutePath();
+    assertThat(project.getCompileSourceRoots()).contains(expected);
   }
 
   @Test public void helloWorldFormats() throws Exception {
@@ -64,7 +79,7 @@ public final class IntegrationTest {
     File fooBarBazTemplate = new File(basedir, "target/generated-sources/twirl/foo/bar/html/baz.template.scala");
     assertThat(fooBarBazTemplate).exists();
     String fooBarBaz = Files.toString(fooBarBazTemplate, UTF_8);
-    assertThat(fooBarBaz).contains("import my.other.Thing");
+    assertThat(fooBarBaz).contains("import my.Thing").contains("import my.other.Thing");
   }
 
   @Test public void importReplacement() throws Exception {
