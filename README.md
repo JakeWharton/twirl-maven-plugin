@@ -3,6 +3,21 @@ Twirl Maven Plugin
 
 A Maven plugin which compiles [Twirl templates][1] into Scala source files.
 
+Twirl lets you write type-safe, compiled templates in Scala:
+```scala
+// Hello.scala.html
+@(name: String)
+<h1>Hello, @name!</h1>
+```
+which you then render in code:
+```java
+html.Hello.render("Jake")
+```
+to yeild the final result:
+```
+<h1>Hello, Jake!</h1>
+```
+
 
 
 Usage
