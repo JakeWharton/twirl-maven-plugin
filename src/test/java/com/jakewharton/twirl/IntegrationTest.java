@@ -23,6 +23,21 @@ public final class IntegrationTest {
     assertThat(fooBarBazTemplate).exists();
   }
 
+  @Test public void helloWorldFormats() throws Exception {
+    File basedir = resources.getBasedir("hello-world-formats");
+
+    rule.executeMojo(basedir, "compile");
+
+    File fooBarBazHtmlTemplate = new File(basedir, "target/generated-sources/twirl/foo/bar/html/baz.template.scala");
+    assertThat(fooBarBazHtmlTemplate).exists();
+    File fooBarBazJsTemplate = new File(basedir, "target/generated-sources/twirl/foo/bar/js/baz.template.scala");
+    assertThat(fooBarBazJsTemplate).exists();
+    File fooBarBazTxtTemplate = new File(basedir, "target/generated-sources/twirl/foo/bar/txt/baz.template.scala");
+    assertThat(fooBarBazTxtTemplate).exists();
+    File fooBarBazXmlTemplate = new File(basedir, "target/generated-sources/twirl/foo/bar/xml/baz.template.scala");
+    assertThat(fooBarBazXmlTemplate).exists();
+  }
+
   @Test public void templateDirectory() throws Exception {
     File basedir = resources.getBasedir("template-directory");
 
