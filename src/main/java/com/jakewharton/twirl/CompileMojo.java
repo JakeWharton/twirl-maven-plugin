@@ -26,7 +26,7 @@ import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURC
 
 @SuppressWarnings("UnusedDeclaration") // Used reflectively by Maven.
 @Mojo(name = "compile", defaultPhase = GENERATE_SOURCES, threadSafe = true)
-public class CompileMojo extends AbstractMojo {
+public final class CompileMojo extends AbstractMojo {
   private static final Map<String, String> FORMATTERS = ImmutableMap.<String, String>builder()
       .put("html", HtmlFormat.class.getCanonicalName())
       .put("txt", TxtFormat.class.getCanonicalName())
@@ -53,7 +53,7 @@ public class CompileMojo extends AbstractMojo {
    * </pre>
    */
   @Parameter
-  protected Set<String> includes = Sets.newLinkedHashSet();
+  private Set<String> includes = Sets.newLinkedHashSet();
 
   /**
    * A set of exclusion filters for the compiler.
@@ -66,7 +66,7 @@ public class CompileMojo extends AbstractMojo {
    * </pre>
    */
   @Parameter
-  protected Set<String> excludes = Sets.newLinkedHashSet();
+  private Set<String> excludes = Sets.newLinkedHashSet();
 
   /**
    * A set of additional imports for the templates.
@@ -95,6 +95,12 @@ public class CompileMojo extends AbstractMojo {
         includes.add("**/*.scala." + extension);
       }
     }
+
+    log.debug("templateDirectory: " + templateDirectory);
+    log.debug("outputDirectory: " + outputDirectory);
+    log.debug("includes: " + includes);
+    log.debug("excludes: " + excludes);
+    log.debug("imports: " + imports);
 
     String[] templatePaths = findFiles(templateDirectory, includes, excludes);
     if (templatePaths.length == 0) {

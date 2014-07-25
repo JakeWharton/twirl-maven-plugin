@@ -13,6 +13,14 @@
       <plugin>
         <groupId>com.jakewharton.twirl</groupId>
         <artifactId>twirl-maven-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>bar/**</include>
+          </includes>
+          <excludes>
+            <exclude>bar/foo/**</exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>
