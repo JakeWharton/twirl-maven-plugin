@@ -26,6 +26,34 @@ public final class IntegrationTest {
     assertThat(fooBarBazTemplate).exists();
   }
 
+  @Test public void javaImports() throws Exception {
+    File basedir = resources.getBasedir("java-imports");
+
+    rule.executeMojo(basedir, "compile");
+
+    File fooBarBazTemplate = new File(basedir, "target/generated-sources/twirl/foo/bar/html/baz.template.scala");
+    assertThat(fooBarBazTemplate).exists();
+    String fooBarBaz = Files.toString(fooBarBazTemplate, UTF_8);
+    assertThat(fooBarBaz).contains("import java.util._")
+        .contains("import java.lang._")
+        .contains("import scala.collection.JavaConversions._")
+        .contains("import scala.collection.JavaConverters._");
+  }
+
+  @Test public void javaImportsDisabled() throws Exception {
+    File basedir = resources.getBasedir("java-imports-disabled");
+
+    rule.executeMojo(basedir, "compile");
+
+    File fooBarBazTemplate = new File(basedir, "target/generated-sources/twirl/foo/bar/html/baz.template.scala");
+    assertThat(fooBarBazTemplate).exists();
+    String fooBarBaz = Files.toString(fooBarBazTemplate, UTF_8);
+    assertThat(fooBarBaz).doesNotContain("import java.util._")
+        .doesNotContain("import java.lang._")
+        .doesNotContain("import scala.collection.JavaConversions._")
+        .doesNotContain("import scala.collection.JavaConverters._");
+  }
+
   @Test public void outputDirectoryAddedAsSourceRoot() throws Exception {
     File basedir = resources.getBasedir("hello-world");
 

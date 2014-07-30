@@ -1,6 +1,7 @@
 package com.jakewharton.twirl;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.io.File;
@@ -32,6 +33,12 @@ public final class CompileMojo extends AbstractMojo {
       .put("txt", TxtFormat.class.getCanonicalName())
       .put("xml", XmlFormat.class.getCanonicalName())
       .put("js", JavaScriptFormat.class.getCanonicalName())
+      .build();
+  private static final Set<String> JAVA_IMPORTS = ImmutableSet.<String>builder()
+      .add("java.lang._")
+      .add("java.util._")
+      .add("scala.collection.JavaConversions._")
+      .add("scala.collection.JavaConverters._")
       .build();
 
   /** Directory from which to compile templates. */
@@ -86,6 +93,11 @@ public final class CompileMojo extends AbstractMojo {
   @SuppressWarnings("FieldCanBeLocal") // Mojo parameter.
   private boolean addSourceRoot = true;
 
+  /** Whether to automatically add template {@linkplain #imports} which ease use from Java. */
+  @Parameter
+  @SuppressWarnings("FieldCanBeLocal") // Mojo parameter.
+  private boolean useJavaHelpers = true;
+
   @Parameter(defaultValue = "${project}", readonly = true, required = true)
   private MavenProject project;
 
@@ -100,12 +112,17 @@ public final class CompileMojo extends AbstractMojo {
         includes.add("**/*.scala." + extension);
       }
     }
+    if (useJavaHelpers) {
+      imports.addAll(JAVA_IMPORTS);
+    }
 
     log.debug("templateDirectory: " + templateDirectory);
     log.debug("outputDirectory: " + outputDirectory);
     log.debug("includes: " + includes);
     log.debug("excludes: " + excludes);
     log.debug("imports: " + imports);
+    log.debug("addSourceRoot: " + addSourceRoot);
+    log.debug("useJavaHelpers: " + useJavaHelpers);
 
     String[] templatePaths = findFiles(templateDirectory, includes, excludes);
     if (templatePaths.length == 0) {
