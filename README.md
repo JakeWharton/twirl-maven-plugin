@@ -58,6 +58,8 @@ source root on the project.
 The generated code is a Scala source file for each template which still need
 to be compiled using something like the [scala-maven-plugin][2].
 
+Snapshots of the development version are available in [Sonatype's `snapshots` repository][snap].
+
 
 
 License
@@ -81,3 +83,4 @@ License
 
  [1]: https://github.com/playframework/twirl
  [2]: https://github.com/davidB/scala-maven-plugin
+ [snap]: https://oss.sonatype.org/content/repositories/snapshots/
