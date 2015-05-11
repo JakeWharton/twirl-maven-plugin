@@ -167,4 +167,11 @@ public final class IntegrationTest {
     File fooBazTemplate = new File(basedir, "target/generated-sources/twirl/foo/html/baz.template.scala");
     assertThat(fooBazTemplate).doesNotExist();
   }
+
+  @Test public void missingFolderDoesNotThrow() throws Exception {
+    File basedir = resources.getBasedir("missing-folder");
+
+    rule.executeMojo(basedir, "compile");
+    // Not throwing an exception is considered passing.
+  }
 }
