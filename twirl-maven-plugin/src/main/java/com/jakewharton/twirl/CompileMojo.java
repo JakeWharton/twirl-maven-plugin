@@ -170,6 +170,8 @@ public final class CompileMojo extends AbstractMojo {
   }
 
   private static String[] findFiles(File dir, Set<String> includes, Set<String> excludes) {
+    if(!dir.exists())
+      return new String[]{};
     DirectoryScanner scanner = new DirectoryScanner();
     scanner.setBasedir(dir);
     scanner.setIncludes(includes.toArray(new String[includes.size()]));
