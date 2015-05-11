@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.3 *(2015-05-11)*
+----------------------------
+
+ * Fix: Do not crash when the template directory is missing.
+
+
 Version 1.0.2 *(2014-07-29)*
 ----------------------------
 
