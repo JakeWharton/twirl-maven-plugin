@@ -167,4 +167,11 @@ public final class IntegrationTest {
     File fooBazTemplate = new File(basedir, "target/generated-sources/twirl/foo/html/baz.template.scala");
     assertThat(fooBazTemplate).doesNotExist();
   }
+
+  @Test public void notExistFolder() throws Exception{
+    File basedir = resources.getBasedir("not-existing-folder");
+
+    rule.executeMojo(basedir, "compile");
+
+  }
 }
