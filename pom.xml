@@ -52,12 +52,12 @@
       <dependency>
         <groupId>com.typesafe.play</groupId>
         <artifactId>twirl-compiler_2.11</artifactId>
-        <version>1.0.4</version>
+        <version>1.1.1</version>
       </dependency>
       <dependency>
         <groupId>com.typesafe.play</groupId>
         <artifactId>twirl-api_2.11</artifactId>
-        <version>1.0.4</version>
+        <version>1.1.1</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
@@ -129,6 +129,11 @@
           <groupId>net.alchim31.maven</groupId>
           <artifactId>scala-maven-plugin</artifactId>
           <version>3.2.0</version>
+          <configuration>
+            <recompileMode>incremental</recompileMode>
+            <scalaCompatVersion>2.11</scalaCompatVersion>
+            <scalaVersion>2.11.6</scalaVersion>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
