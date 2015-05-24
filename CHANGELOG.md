@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.4 *(2015-05-24)*
+----------------------------
+
+ * Update Twirl dependencies to the latest version (1.1.1).
+
+
 Version 1.0.3 *(2015-05-11)*
 ----------------------------
 
