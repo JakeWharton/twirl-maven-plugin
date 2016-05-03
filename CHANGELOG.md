@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.5 *(2016-05-02)*
+----------------------------
+
+ * Add m2e lifecycle mapping file so compilation works by default in Eclipse.
+
+
 Version 1.0.4 *(2015-05-24)*
 ----------------------------
 
