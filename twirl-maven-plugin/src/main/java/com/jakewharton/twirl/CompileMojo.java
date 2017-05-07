@@ -5,6 +5,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.io.File;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -16,11 +19,11 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.DirectoryScanner;
+import play.japi.twirl.compiler.TwirlCompiler;
 import play.twirl.api.HtmlFormat;
 import play.twirl.api.JavaScriptFormat;
 import play.twirl.api.TxtFormat;
 import play.twirl.api.XmlFormat;
-import play.twirl.compiler.TwirlCompiler;
 import scala.io.Codec;
 
 import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURCES;
@@ -101,7 +104,7 @@ public final class CompileMojo extends AbstractMojo {
   @Parameter(defaultValue = "${project}", readonly = true, required = true)
   private MavenProject project;
 
-  private final Map<String, String> importCache = Maps.newLinkedHashMap();
+  private final Map<String, Set<String>> importCache = Maps.newLinkedHashMap();
 
   @Override public void execute() throws MojoExecutionException, MojoFailureException {
     Log log = getLog();
@@ -137,12 +140,13 @@ public final class CompileMojo extends AbstractMojo {
 
       String extension = extensionOf(template);
       String formatter = FORMATTERS.get(extension);
-      String imports = getImports(extension);
+      Set<String> imports = getImports(extension);
+      List<String> constructorAnnotations = Collections.<String>singletonList("@javax.inject.Inject()");
 
       log.debug(String.format("Compiling '%s'...", templatePath));
 
       TwirlCompiler.compile(template, templateDirectory, outputDirectory, formatter, imports,
-          Codec.UTF8(), false, false);
+          constructorAnnotations, Codec.UTF8(), false);
     }
 
     long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos);
@@ -153,20 +157,19 @@ public final class CompileMojo extends AbstractMojo {
     }
   }
 
-  private String getImports(String extension) {
-    String imports = importCache.get(extension);
-    if (imports == null) {
-      StringBuilder builder = new StringBuilder();
-      for (String i : this.imports) {
-        if (builder.length() > 0) {
-          builder.append('\n');
-        }
-        builder.append("import ").append(i.replace("%format%", extension));
-      }
-      imports = builder.toString();
-      importCache.put(extension, imports);
+  private Set<String> getImports(String extension) {
+    Set<String> imports = importCache.get(extension);
+    if (imports != null) {
+      return imports;
     }
-    return imports;
+
+    Set<String> result = new HashSet<>();
+    result.addAll(TwirlCompiler.DEFAULT_IMPORTS);
+    for (String i : this.imports) {
+      result.add(i.replace("%format%", extension));
+    }
+    importCache.put(extension, result);
+    return result;
   }
 
   private static String[] findFiles(File dir, Set<String> includes, Set<String> excludes) {
