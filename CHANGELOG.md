@@ -4,7 +4,7 @@ Change Log
 Version 1.1.0 *(2017-07-02)*
 ----------------------------
 
- * Update to Twirl 1.3.3.
+ * Update to Twirl 1.3.3 which adds support for injectable templates.
  * Java 8 is now required to run Twirl and thus is also required for this plugin.
 
 
