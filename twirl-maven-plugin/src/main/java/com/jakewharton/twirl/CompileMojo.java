@@ -1,16 +1,14 @@
 package com.jakewharton.twirl;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import java.io.File;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -26,6 +24,9 @@ import play.twirl.api.TxtFormat;
 import play.twirl.api.XmlFormat;
 import scala.io.Codec;
 
+import static com.google.common.collect.Collections2.transform;
+import static java.util.Collections.singletonList;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURCES;
 
 @SuppressWarnings("UnusedDeclaration") // Used reflectively by Maven.
@@ -63,7 +64,7 @@ public final class CompileMojo extends AbstractMojo {
    * </pre>
    */
   @Parameter
-  private Set<String> includes = Sets.newLinkedHashSet();
+  private Set<String> includes = new LinkedHashSet<>();
 
   /**
    * A set of exclusion filters for the compiler.
@@ -76,7 +77,7 @@ public final class CompileMojo extends AbstractMojo {
    * </pre>
    */
   @Parameter
-  private Set<String> excludes = Sets.newLinkedHashSet();
+  private Set<String> excludes = new LinkedHashSet<>();
 
   /**
    * A set of additional imports for the templates.
@@ -89,7 +90,7 @@ public final class CompileMojo extends AbstractMojo {
    * </pre>
    */
   @Parameter
-  private Set<String> imports = Sets.newLinkedHashSet();
+  private Set<String> imports = new LinkedHashSet<>();
 
   /** Whether to add the output directory as a compilation source root. */
   @Parameter
@@ -104,7 +105,7 @@ public final class CompileMojo extends AbstractMojo {
   @Parameter(defaultValue = "${project}", readonly = true, required = true)
   private MavenProject project;
 
-  private final Map<String, Set<String>> importCache = Maps.newLinkedHashMap();
+  private final Map<String, Set<String>> importCache = new LinkedHashMap<>();
 
   @Override public void execute() throws MojoExecutionException, MojoFailureException {
     Log log = getLog();
@@ -134,14 +135,14 @@ public final class CompileMojo extends AbstractMojo {
     }
 
     log.info(String.format("Compiling %s templates...", templatePaths.length));
-    long startNanos = System.nanoTime();
+    Stopwatch stopwatch = Stopwatch.createStarted();
     for (String templatePath : templatePaths) {
       File template = new File(templateDirectory, templatePath);
 
       String extension = extensionOf(template);
       String formatter = FORMATTERS.get(extension);
       Set<String> imports = getImports(extension);
-      List<String> constructorAnnotations = Collections.singletonList("@javax.inject.Inject()");
+      List<String> constructorAnnotations = singletonList("@javax.inject.Inject()");
 
       log.debug(String.format("Compiling '%s'...", templatePath));
 
@@ -149,8 +150,7 @@ public final class CompileMojo extends AbstractMojo {
           constructorAnnotations, Codec.UTF8(), false);
     }
 
-    long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos);
-    log.info(String.format("Completed in %sms", tookMs));
+    log.info(String.format("Completed in %sms", stopwatch.elapsed(MILLISECONDS)));
 
     if (addSourceRoot) {
       project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
@@ -158,14 +158,10 @@ public final class CompileMojo extends AbstractMojo {
   }
 
   private Set<String> getImports(String extension) {
-    return importCache.computeIfAbsent(extension, s -> {
-      Set<String> result = new LinkedHashSet<>();
-      result.addAll(TwirlCompiler.DEFAULT_IMPORTS);
-      for (String i : imports) {
-        result.add(i.replace("%format%", extension));
-      }
-      return result;
-    });
+    return importCache.computeIfAbsent(extension, s -> ImmutableSet.<String>builder()
+        .addAll(TwirlCompiler.DEFAULT_IMPORTS)
+        .addAll(transform(imports, i -> i.replace("%format%", extension)))
+        .build());
   }
 
   private static String[] findFiles(File dir, Set<String> includes, Set<String> excludes) {
