@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.1.0 *(2017-07-02)*
+----------------------------
+
+ * Update to Twirl 1.3.3.
+ * Java 8 is now required to run Twirl and thus is also required for this plugin.
+
+
 Version 1.0.5 *(2016-05-02)*
 ----------------------------
 
