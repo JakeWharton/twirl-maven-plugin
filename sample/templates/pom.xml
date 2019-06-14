@@ -14,7 +14,7 @@
   <dependencies>
     <dependency>
       <groupId>com.typesafe.play</groupId>
-      <artifactId>twirl-api_2.11</artifactId>
+      <artifactId>twirl-api_${scala.major.version}</artifactId>
     </dependency>
 
     <dependency>
