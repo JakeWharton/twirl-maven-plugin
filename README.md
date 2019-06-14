@@ -46,8 +46,8 @@ and specify a dependency on the Twirl API:
 ```xml
 <dependency>
   <groupId>com.typesafe.play</groupId>
-  <artifactId>twirl-api_2.11</artifactId>
-  <version>1.1.1</version>
+  <artifactId>twirl-api_2.12</artifactId>
+  <version>1.4.1</version>
 </dependency>
 ```
 
