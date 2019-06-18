@@ -44,7 +44,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.10</java.version>
+    <java.version>1.8</java.version>
     <scala.major.version>2.12</scala.major.version>
     <twirl.version>1.4.1</twirl.version>
   </properties>
