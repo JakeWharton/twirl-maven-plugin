@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class IndexTest {
   @Test public void indexWithTemplate() {
     String actual = Index.render().toString();
-    String expected = String.format("<!DOCTYPE html>\n"
+    String expected = "<!DOCTYPE html>\n"
         + "<html>\n"
         + "  <head>\n"
         + "    <title>Index - Example</title>\n"
@@ -18,7 +18,7 @@ public class IndexTest {
         + "\n"
         + "  </body>\n"
         + "</html>\n"
-        + "\n");
+        + "\n";
     assertThat(actual).isEqualTo(expected);
   }
 }
