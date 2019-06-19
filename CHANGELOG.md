@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.2.0 *(2019-06-19)*
+----------------------------
+
+ * Update to Twirl 1.4.1 and Scala 2.12.8 which adds support for Java 11 and other new versions.
+
+
 Version 1.1.0 *(2017-07-02)*
 ----------------------------
 
