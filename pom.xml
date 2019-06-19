@@ -10,7 +10,7 @@
 
   <groupId>com.jakewharton.twirl</groupId>
   <artifactId>twirl-parent</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.2.0</version>
   <packaging>pom</packaging>
 
   <name>Twirl Maven Plugin (Parent)</name>
