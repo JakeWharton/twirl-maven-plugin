@@ -9,6 +9,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -32,7 +34,7 @@ import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURC
 @SuppressWarnings("UnusedDeclaration") // Used reflectively by Maven.
 @Mojo(name = "compile", defaultPhase = GENERATE_SOURCES, threadSafe = true)
 public final class CompileMojo extends AbstractMojo {
-  private static final Map<String, String> FORMATTERS = ImmutableMap.<String, String>builder()
+  private static final Map<String, String> DEFAULT_FORMATTERS = ImmutableMap.<String, String>builder()
       .put("html", HtmlFormat.class.getCanonicalName())
       .put("txt", TxtFormat.class.getCanonicalName())
       .put("xml", XmlFormat.class.getCanonicalName())
@@ -91,6 +93,9 @@ public final class CompileMojo extends AbstractMojo {
    */
   @Parameter
   private Set<String> imports = new LinkedHashSet<>();
+  
+  @Parameter
+  private Set<String> customFormatters = new LinkedHashSet<>();
 
   /** Whether to add the output directory as a compilation source root. */
   @Parameter
@@ -106,13 +111,22 @@ public final class CompileMojo extends AbstractMojo {
   private MavenProject project;
 
   private final Map<String, Set<String>> importCache = new LinkedHashMap<>();
-
+  private final Map<String, String> formatters = new LinkedHashMap<>();
+  
   @Override public void execute() throws MojoExecutionException, MojoFailureException {
     Log log = getLog();
 
+    if (formatters.isEmpty()) {
+    	DEFAULT_FORMATTERS.forEach(formatters::put);
+    	customFormatters.forEach(s -> {
+    		String[] parts = s.split(":");
+    		formatters.put(parts[0], parts[1]);
+    	});
+    }
+    
     if (includes.isEmpty()) {
       // Add default globs for all supported extensions.
-      for (String extension : FORMATTERS.keySet()) {
+      for (String extension : formatters.keySet()) {
         includes.add("**/*.scala." + extension);
       }
     }
@@ -140,7 +154,7 @@ public final class CompileMojo extends AbstractMojo {
       File template = new File(templateDirectory, templatePath);
 
       String extension = extensionOf(template);
-      String formatter = FORMATTERS.get(extension);
+      String formatter = formatters.get(extension);
       Set<String> imports = getImports(extension);
       List<String> constructorAnnotations = singletonList("@javax.inject.Inject()");
 
