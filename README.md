@@ -55,6 +55,18 @@ By default the plugin looks for templates in `src/main/twirl/` and compiles to
 `target/generated-sources/twirl/`. The output folder is automatically added as a
 source root on the project.
 
+Custom template formatters can also be specified:
+
+```xml
+<plugin>
+  <groupId>com.jakewharton.twirl</groupId>
+  <artifactId>twirl-maven-plugin</artifactId>
+    ...
+  <configuration>
+    <customFormatters>custom:fully.qualified.name.CustomTwirlFormat</customFormatters>
+  </configuration>
+```
+
 The generated code is a Scala source file for each template which still need
 to be compiled using something like the [scala-maven-plugin][2].
 

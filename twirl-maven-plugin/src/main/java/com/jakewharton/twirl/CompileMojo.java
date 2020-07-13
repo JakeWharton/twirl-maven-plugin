@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -120,7 +119,17 @@ public final class CompileMojo extends AbstractMojo {
     	DEFAULT_FORMATTERS.forEach(formatters::put);
     	customFormatters.forEach(s -> {
     		String[] parts = s.split(":");
-    		formatters.put(parts[0], parts[1]);
+    		if (parts.length == 2) {
+    		  try {
+    		    // confirm that the specified class exists
+    		    Class.forName(parts[1]);
+    		    formatters.put(parts[0], parts[1]);
+              } catch (ClassNotFoundException e) {
+    		    log.debug("formatter class doesn't exist: " + parts[1]);
+              }
+            } else {
+    		  log.debug("skipping invalid formatter: " + s);
+            }
     	});
     }
     
