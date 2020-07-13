@@ -120,13 +120,7 @@ public final class CompileMojo extends AbstractMojo {
     	customFormatters.forEach(s -> {
     		String[] parts = s.split(":");
     		if (parts.length == 2) {
-    		  try {
-    		    // confirm that the specified class exists
-    		    Class.forName(parts[1]);
-    		    formatters.put(parts[0], parts[1]);
-              } catch (ClassNotFoundException e) {
-    		    log.debug("formatter class doesn't exist: " + parts[1]);
-              }
+              formatters.put(parts[0], parts[1]);
             } else {
     		  log.debug("skipping invalid formatter: " + s);
             }
