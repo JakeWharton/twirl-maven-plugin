@@ -10,7 +10,7 @@
 
   <groupId>com.github.ElderResearch.twirl-maven-plugin</groupId>
   <artifactId>twirl-maven-plugin</artifactId>
-  <version>1.2.0</version>
+  <version>feature~custom_Twirl_formatter_support-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>Twirl Maven Plugin</name>
   <description>Maven plugin for compiling Twirl templates.</description>
