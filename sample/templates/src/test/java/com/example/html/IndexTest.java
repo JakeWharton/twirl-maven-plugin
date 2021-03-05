@@ -18,8 +18,7 @@ public class IndexTest {
         + "<h1>Hello, world!</h1>\n"
         + "\n"
         + "  </body>\n"
-        + "</html>\n"
-        + "\n";
-    assertThat(actual).isEqualTo(expected);
+        + "</html>";
+    assertThat(actual.replaceAll("[\r]", "").trim()).isEqualTo(expected);
   }
 }

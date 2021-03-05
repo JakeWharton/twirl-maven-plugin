@@ -36,8 +36,7 @@ public final class IntegrationTest {
     String fooBarBaz = Files.toString(fooBarBazTemplate, UTF_8);
     assertThat(fooBarBaz).contains("import java.util._")
         .contains("import java.lang._")
-        .contains("import scala.collection.JavaConversions._")
-        .contains("import scala.collection.JavaConverters._");
+        .contains("import scala.jdk.CollectionConverters._");
   }
 
   @Test public void javaImportsDisabled() throws Exception {
