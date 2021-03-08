@@ -84,7 +84,7 @@
       <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
-        <version>2.0.0</version>
+        <version>3.19.0</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.plugin-testing</groupId>
@@ -155,7 +155,7 @@
         <plugin>
           <groupId>net.alchim31.maven</groupId>
           <artifactId>scala-maven-plugin</artifactId>
-          <version>4.0.2</version>
+          <version>4.4.1</version>
           <configuration>
             <recompileMode>incremental</recompileMode>
             <scalaCompatVersion>${scala.major.version}</scalaCompatVersion>
