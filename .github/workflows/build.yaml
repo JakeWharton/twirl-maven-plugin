@@ -23,3 +23,6 @@ jobs:
       - name: Upload snapshot
         if: ${{ github.ref == 'refs/heads/trunk' && github.repository == 'JakeWharton/twirl-maven-plugin' }}
         run: mvn clean source:jar javadoc:jar deploy --settings=".github/workflows/settings.xml" -Dmaven.test.skip=true
+        env:
+          SONATYPE_NEXUS_USERNAME: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
+          SONATYPE_NEXUS_PASSWORD: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
