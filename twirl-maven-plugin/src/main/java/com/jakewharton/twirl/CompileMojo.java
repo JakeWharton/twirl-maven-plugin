@@ -41,7 +41,7 @@ public final class CompileMojo extends AbstractMojo {
   private static final Set<String> JAVA_IMPORTS = ImmutableSet.<String>builder()
       .add("java.lang._")
       .add("java.util._")
-//    .add("scala.collection.JavaConversions._") removed in 2.12
+//    .add("scala.collection.JavaConversions._") removed in 2.13
       .add("scala.collection.JavaConverters._")
       .build();
 
