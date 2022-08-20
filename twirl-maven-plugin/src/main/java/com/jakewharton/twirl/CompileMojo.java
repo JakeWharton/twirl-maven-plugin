@@ -23,6 +23,7 @@ import play.twirl.api.JavaScriptFormat;
 import play.twirl.api.TxtFormat;
 import play.twirl.api.XmlFormat;
 import scala.io.Codec;
+import scala.tools.nsc.settings.ScalaVersion;
 
 import static com.google.common.collect.Collections2.transform;
 import static java.util.Collections.singletonList;
@@ -32,18 +33,14 @@ import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURC
 @SuppressWarnings("UnusedDeclaration") // Used reflectively by Maven.
 @Mojo(name = "compile", defaultPhase = GENERATE_SOURCES, threadSafe = true)
 public final class CompileMojo extends AbstractMojo {
+
   private static final Map<String, String> FORMATTERS = ImmutableMap.<String, String>builder()
       .put("html", HtmlFormat.class.getCanonicalName())
       .put("txt", TxtFormat.class.getCanonicalName())
       .put("xml", XmlFormat.class.getCanonicalName())
       .put("js", JavaScriptFormat.class.getCanonicalName())
       .build();
-  private static final Set<String> JAVA_IMPORTS = ImmutableSet.<String>builder()
-      .add("java.lang._")
-      .add("java.util._")
-//    .add("scala.collection.JavaConversions._") removed in 2.13
-      .add("scala.collection.JavaConverters._")
-      .build();
+  private static final Set<String> JAVA_IMPORTS = ScalaVersionHelper.getJavaImport();
 
   /** Directory from which to compile templates. */
   @Parameter(defaultValue = "${project.basedir}/src/main/twirl")
