@@ -27,6 +27,9 @@
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
+
+
+<!--  make maven depend on plugin in module-->
   </dependencies>
 
   <build>
@@ -34,7 +37,9 @@
       <plugin>
         <groupId>com.jakewharton.twirl</groupId>
         <artifactId>twirl-maven-plugin</artifactId>
-        <version>${project.version}</version>
+        <configuration>
+          <useJavaHelpers>false</useJavaHelpers>
+        </configuration>
         <executions>
           <execution>
             <phase>generate-sources</phase>

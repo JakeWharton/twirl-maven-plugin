@@ -45,8 +45,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
-    <scala.major.version>2.12</scala.major.version>
-    <twirl.version>1.4.1</twirl.version>
+    <scala.major.version>2.13</scala.major.version>
+    <scala.minor.version>8</scala.minor.version>
+    <twirl.version>1.5.1</twirl.version>
   </properties>
 
   <dependencyManagement>
@@ -55,11 +56,28 @@
         <groupId>com.typesafe.play</groupId>
         <artifactId>twirl-compiler_${scala.major.version}</artifactId>
         <version>${twirl.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>${scala.major.version}.${scala.minor.version}</version>
       </dependency>
       <dependency>
         <groupId>com.typesafe.play</groupId>
         <artifactId>twirl-api_${scala.major.version}</artifactId>
         <version>${twirl.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
@@ -148,6 +166,19 @@
           </configuration>
         </plugin>
         <plugin>
+          <groupId>com.jakewharton.twirl</groupId>
+          <artifactId>twirl-maven-plugin</artifactId>
+          <version>${project.version}</version>
+          <executions>
+            <execution>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>compile</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.1</version>
@@ -159,7 +190,7 @@
           <configuration>
             <recompileMode>incremental</recompileMode>
             <scalaCompatVersion>${scala.major.version}</scalaCompatVersion>
-            <scalaVersion>${scala.major.version}.8</scalaVersion>
+            <scalaVersion>${scala.major.version}.${scala.minor.version}</scalaVersion>
           </configuration>
         </plugin>
       </plugins>
