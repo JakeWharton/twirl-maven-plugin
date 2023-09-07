@@ -29,7 +29,7 @@ Add the plugin in your `pom.xml`:
 <plugin>
   <groupId>com.jakewharton.twirl</groupId>
   <artifactId>twirl-maven-plugin</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.2-SNAPSHOT</version>
   <executions>
     <execution>
       <phase>generate-sources</phase>
@@ -47,7 +47,7 @@ and specify a dependency on the Twirl API:
 <dependency>
   <groupId>com.typesafe.play</groupId>
   <artifactId>twirl-api_2.12</artifactId>
-  <version>1.4.1</version>
+  <version>1.5.2</version>
 </dependency>
 ```
 
