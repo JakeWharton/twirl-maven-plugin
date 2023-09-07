@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+
+Version 1.2.2-SNAPSHOT *(2023-09-07)*
+----------------------------
+
+ * Update to Twirl 1.5.2 and Scala 2.13.10 with support for Java 11.
+ * generating scala sources which import now : scala.jdk.CollectionConverters._
+ * Update of various maven-plugins to 3.9.4.
+ * because some scala artifacts differ in the scala-libs 2.13.10 and 2.13.11
+ * and also the maven-plugins are not basing consistently, I had to give up
+ * enforcing the dependencyConvergence. > so now it's alwaysPass  :-)
+
 Version 1.2.0 *(2019-06-19)*
 ----------------------------
 
